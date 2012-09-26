@@ -1,5 +1,7 @@
 # HttpStatsd
 
+[![Build Status](https://secure.travis-ci.org/grk/http_statsd.png)](http://travis-ci.org/grk/http_statsd)
+
 HttpStatsd provides a HTTP proxy for the statsd protocol. The use case is when
 you need to collect metrics from an external source, but for obvious reasons
 don't want to expose the udp interface of statsd.
