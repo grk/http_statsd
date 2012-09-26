@@ -7,10 +7,9 @@ Gem::Specification.new do |gem|
   gem.name          = "http_statsd"
   gem.version       = HttpStatsd::VERSION
   gem.authors       = ["Grzesiek Kolodziejczyk"]
-  gem.email         = ["gkolodziejczyk@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.email         = ["gk@code-fu.pl"]
+  gem.summary       = %q{HTTP proxy for statsd with basic auth}
+  gem.homepage      = "https://github.com/grk/http_statsd"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
