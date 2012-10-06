@@ -62,6 +62,10 @@ c.decrement("metric.counter", sample_rate)
 c.count("metric.counter", 121, sample_rate)
 c.gauge("metric.gauge", 123)
 c.timing("metric.timing", 15.52, sample_rate)
+c.batch do |b| # this will send the metrics as one http request
+  b.increment("metric.counter")
+  b.gauge("metric.gauge", 120)
+end
 ```
 
 ## Contributing

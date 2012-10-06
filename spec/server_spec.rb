@@ -67,4 +67,14 @@ describe HttpStatsd::Server do
         :sample_rate => "0.1"
     end
   end
+
+  describe "/batch" do
+    it "should process batch metrics" do
+      statsd.should_receive(:timing).with("metric.one", "11.1", 0.1)
+      statsd.should_receive(:gauge).with("metric.two", "12.2", 0.2)
+      statsd.should_receive(:count).with("metric.three", "13.3", 0.3)
+      post "/batch", :metrics =>
+        "timing metric.one 11.1 0.1\ngauge metric.two 12.2 0.2\n count metric.three 13.3 0.3"
+    end
+  end
 end

@@ -48,4 +48,61 @@ describe HttpStatsd::Client do
       client.timing("metric.one", 11.1, 0.1)
     end
   end
+
+  describe "batch" do
+    it "should make a single request with multiple metrics" do
+      stub_request(:post, "api1:pass1@localhost/batch").
+        with(:body => {:metrics => "count metric.one 1 0.2\ngauge metric.two 2"})
+      client.batch do |b|
+        b.count("metric.one", 1, 0.2)
+        b.gauge("metric.two", 2)
+      end
+    end
+  end
+
+  describe HttpStatsd::Client::BatchOperation do
+    let(:batch) { HttpStatsd::Client::BatchOperation.new }
+
+    describe "#metrics" do
+      it "is initially an empty array" do
+        batch.metrics.should eql([])
+      end
+    end
+
+    describe "#increment" do
+      it "should add an increment metric to the batch" do
+        batch.increment("metric.one", 0.2)
+        batch.metrics.should eql(["count metric.one 1 0.2"])
+      end
+    end
+
+    describe "#decrement" do
+      it "should add an decrement metric to the batch" do
+        batch.decrement("metric.one", 0.2)
+        batch.metrics.should eql(["count metric.one -1 0.2"])
+      end
+    end
+
+    describe "#count" do
+      it "should add a count metric to the batch" do
+        batch.count("metric.one", 12, 0.2)
+        batch.metrics.should eql(["count metric.one 12 0.2"])
+      end
+    end
+
+    describe "#gauge" do
+      it "should add a gauge metric to the batch" do
+        batch.gauge("metric.one", 12)
+        batch.metrics.should eql(["gauge metric.one 12"])
+      end
+    end
+
+    describe "#timing" do
+      it "should add a timing metric to the batch" do
+        batch.timing("metric.one", 12, 0.2)
+        batch.metrics.should eql(["timing metric.one 12 0.2"])
+      end
+    end
+
+  end
 end

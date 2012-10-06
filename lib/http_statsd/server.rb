@@ -49,6 +49,17 @@ module HttpStatsd
       204
     end
 
+    post '/batch' do
+      metrics = params["metrics"]
+      metrics.split("\n").each do |metric|
+        metric = metric.split
+        args = [metric[0], metric[1], metric[2]]
+        args << metric[3].to_f if metric[3]
+        statsd.send(*args)
+      end
+      201
+    end
+
     get '/' do
       200
     end
